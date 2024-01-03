@@ -1,0 +1,10 @@
+1
+Burgers
+2
+Drinks
+3
+Fries
+4
+Pizza
+5
+Milk_Tea

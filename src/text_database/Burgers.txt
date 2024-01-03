@@ -1,0 +1,12 @@
+1
+Plain Burger
+29.5
+2
+Cheese Burger
+39.5
+3
+Red Moon Burger
+49.5
+4
+Beef Burger
+60.0

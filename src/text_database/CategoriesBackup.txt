@@ -1,0 +1,29 @@
+1
+Burgers
+2
+Drinks
+3
+Fries
+4
+Pizza
+
+1
+Burgers
+2
+Water
+3
+Drinks
+4
+Fries
+5
+Pizza
+
+1
+Plain Burger
+29.5
+2
+Cheese Burger
+39.5
+3
+Red Moon Burger
+49.5
