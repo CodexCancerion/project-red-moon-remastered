@@ -1,11 +1,10 @@
 
 import java.io.IOException;
 
-public class UserAccess {
-    private static Costumer suki;
-    private static Menu menu;
-    public static void main(String[] args) throws IOException {
-
+public class CustomerAccess {
+    private Costumer suki;
+    private Menu menu;
+    public void startCustomerProcess() throws IOException {
         suki = new Costumer();
         menu = new Menu();
 
@@ -14,11 +13,9 @@ public class UserAccess {
         printWelcomeMessage();
         initiateOrderingThread();
         suki.initiateOrdersModification();
-
-
     }
 
-    public static void initiateOrderingThread() throws IOException {
+    public void initiateOrderingThread() throws IOException {
         boolean orderAgain = true;
         do {
             //printing of Main Menu >> Product Categories
@@ -57,7 +54,7 @@ public class UserAccess {
         } while(orderAgain);
     }
 
-    public static void initiateCheckOutThread(){
+    public void initiateCheckOutThread(){
         suki.initiateOrdersModification();
         System.out.println("\nOPTIONS:" +
                 "\n[1]\tProceed to Check Out" +
@@ -77,21 +74,21 @@ public class UserAccess {
 
     }
 
-    public static void printWelcomeMessage(){
+    public void printWelcomeMessage(){
         System.out.println("Welcome to" +
                 "\nRED MOON FOODS" +
                 "\nSELF-ORDERING SYSTEM" +
                 "\nOrder Your Foods Now!");
     }
 
-    public static void printMenu(){
+    public void printMenu(){
         System.out.print("\nMAIN MENU >> Choose here to order" +
                 "\n||==============================||");
         System.out.print(menu.getCategoriesListString());
         System.out.println("\n\t[0]\tView Orders");
         System.out.println("\n||==============================||");
     }
-    public static int takeUserChoiceInt(int i){
+    public int takeUserChoiceInt(int i){
         int input;
         do {
             System.out.print("Your Choice: ");
@@ -100,7 +97,7 @@ public class UserAccess {
         return input;
     }
 
-    public static void confirmOrder(int index, String name, double price, int quantity){
+    public void confirmOrder(int index, String name, double price, int quantity){
         System.out.println("\nORDER CONFIRMATION" +
                 "\nYou would like to order " +quantity+ " " + name+ " with a total of " +price*quantity+".");
         System.out.print("Do you want to proceed? [y/n] ");
@@ -112,7 +109,7 @@ public class UserAccess {
         else if (input=='n' || input=='N') System.out.println("Order was discarded.");
     }
 
-    public static void generateTestOrders() throws IOException {
+    public void generateTestOrders() throws IOException {
         menu.getCategoryList().get(1).populateProductList();
         for (Product i: menu.getCategoryList().get(1).getProductList()) {
             suki.addOrder(new Product(i.getProductIndex(),i.getProductName(),i.getProductPrice(),5));
