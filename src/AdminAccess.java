@@ -14,6 +14,7 @@ public class AdminAccess {
 
     public void startAdminProcess() throws IOException {
         menu = new Menu();
+        menu.populateCategoryList();
         printWelcomeMessage();
 
         //DISPLAY MENU
@@ -22,16 +23,20 @@ public class AdminAccess {
     }
 
     public void printWelcomeMessage() throws IOException {
-        menu.populateCategoryList();
         System.out.print("""
                 RED MOON FOODS
                 SELF-ORDERING SYSTEM
                 ADMIN ACCESS - Add, Remove, or Modify the Products
                 """);
-
     }
 
+    /**
+     * Display List of categories including the commands
+     * Prompts user command and validates them
+     * @throws IOException
+     */
     public void displayCategories() throws IOException {
+        //important since text-database may be updated, populate categoy list first before displaying
         menu.populateCategoryList();
         System.out.print("""
 
@@ -50,18 +55,23 @@ public class AdminAccess {
                 """);
 
         String command = promptUserCommand();
+        /*
+        split user command if ever entered [complete command] - has [<command> <index>]
+        [0] = <command>
+        [1] = <index>
+        */
         String commandArray[] = command.split("\\s+");
-        boolean completeCommand = commandArray.length==2;
-
+        boolean completeCommand = commandArray.length==2; // check if complete command;
+        int indexSelection;
         switch (commandArray[0]) {
             case "select":
-                int indexSelection;
                 if (completeCommand) indexSelection = Integer.parseInt(commandArray[1]);
                 else {
                     System.out.print("\nYour selection:\t");
                     indexSelection = Integer.parseInt(suki.takeUserChoiceStr());
                 }
                 displayProductFromCategory(indexSelection);
+                displayCategories();
                 break;
             case "add":
                 addNewCategory();
@@ -72,7 +82,13 @@ public class AdminAccess {
                 displayCategories();
                 break;
             case "mod":
-
+                if (completeCommand) indexSelection = Integer.parseInt(commandArray[1]);
+                else {
+                    System.out.print("\nYour selection:\t");
+                    indexSelection = Integer.parseInt(suki.takeUserChoiceStr());
+                }
+                modifyCategoryName(indexSelection);
+                displayCategories();
                 break;
             case "exit":
                 break;
@@ -249,53 +265,6 @@ public class AdminAccess {
         //clear list once again
         tempProductList = new ArrayList<>();
     }
-//
-//    public static void insertNewProduct(int categoryIndex, String newName, double newPrice) throws IOException {
-//        //FILE READING SESSION START
-//        //initialize list to clear contents before using again
-//        tempProductList = new ArrayList<>();
-//        //initialize reader
-//        if (categoryIndex>0) categoryIndex -= 1;
-//        menu.getCategoryList().get(categoryIndex).populateProductList();
-//        String categoryName = menu.getCategoryList().get(categoryIndex).getCategoryName();
-//        universalReader = new BufferedReader(new FileReader("src/text_database/"+categoryName+".txt"));
-//        //read all line and put to list using loop
-//        String line;
-//        int counter=0;
-//        do {
-//            line = universalReader.readLine();
-//            if (line==null) break;
-//            String name = universalReader.readLine();
-//            double price = Double.parseDouble(universalReader.readLine());
-//            tempProductList.add(new Product(Integer.parseInt(line), name, price));
-//            counter++;
-//        } while(line!=null);
-//        //close reader
-//        universalReader.close();
-//        //FILE READING SESSION END
-//
-//        //NEW PRODUCT INSERTION
-//        tempProductList.add(new Product(counter+1, newName, newPrice));
-//
-//        //FILE WRITING SESSION START
-//        universalWriter = new BufferedWriter(new FileWriter("src/text_database/"+categoryName+".txt"));
-//        System.out.println("Adding new Category to text database...");
-//        double counter2 = 0;
-//        String message = "";
-//        for (Product i: tempProductList) {
-//            message += (int)(counter2+1) + "\n" +i.getProductName() +"\n"+ i.getProductPrice() +"\n";
-//            double progress = (++counter2/tempProductList.size())*100;
-//            System.out.printf("%d%% in progress\n", (int) progress);
-//        }
-//        universalWriter.write(message);
-//        universalWriter.close();
-//        //FILE WRITING SESSION END
-//
-//        System.out.println("Successfully added "+newName+" on "+categoryName+" text database.");
-//
-//        //clear list once again
-//        tempProductList = new ArrayList<>();
-//    }
 
     public void removeProduct(int categoryIndex, int removeProductIndex) throws IOException {
         //FILE READING SESSION START
@@ -436,5 +405,102 @@ public class AdminAccess {
         System.out.println("Successfully removed Category on text database.");
         tempCategoryList = new ArrayList<>();
 
+    }
+
+    public void modifyCategoryName(int categoryIndex) throws IOException {
+        //category selection
+        //get category list
+        //save former name
+        //populate products on former category
+        //prompt new name
+        //modify name on category list
+        //MODIFY CATEGORY TXT
+        //get product list from former category
+        //CREATE NEW CATEGORY TXT
+        //save product list to new category
+
+        if (categoryIndex>0) categoryIndex--;
+        ArrayList<ProductCategory> categoryList = menu.getCategoryList();
+        categoryList.get(categoryIndex).populateProductList();
+
+        String formerName = categoryList.get(categoryIndex).getCategoryName();
+
+        System.out.println("Enter New Name for "+formerName+":\t");
+        String newName = suki.takeUserChoiceStr();
+
+        categoryList.get(categoryIndex).setCategoryName(newName);
+
+        //FILE READING SESSION START
+        //initialize list to clear contents before using again
+        tempCategoryList = new ArrayList<>();
+        //initialize reader
+        universalReader = new BufferedReader(new FileReader("src/text_database/Categories.txt"));
+        //read all line and put to list using loop
+        String line;
+        int counter=0;
+        do {
+            line = universalReader.readLine();
+            if (line==null) break;
+            String name = universalReader.readLine();
+            tempCategoryList.add(new ProductCategory(Integer.parseInt(line), name));
+            counter++;
+        } while(line!=null);
+        //close reader
+        universalReader.close();
+        //FILE READING SESSION END
+
+        //NEW NAME MODIFICATION
+        tempCategoryList.get(categoryIndex).setCategoryName(newName);
+
+        //FILE WRITING SESSION START
+        universalWriter = new BufferedWriter(new FileWriter("src/text_database/Categories.txt"));
+        String message = "";
+        for (ProductCategory i: tempCategoryList) {
+            message += i.getCategoryIndex() + "\n" +i.getCategoryName() +"\n";
+        }
+        universalWriter.write(message);
+        universalWriter.close();
+        //FILE WRITING SESSION END
+
+
+
+//        //FILE READING SESSION START
+//        //initialize list to clear contents before using again
+//        tempProductList = new ArrayList<>();
+//        //initialize reader
+//        universalReader = new BufferedReader(new FileReader("src/text_database/"+formerName+".txt"));
+//        //read all line and put to list using loop
+//        counter=0;
+//        do {
+//            line = universalReader.readLine();
+//            if (line==null) break;
+//            String name = universalReader.readLine();
+//            double price = Double.parseDouble(universalReader.readLine());
+//            tempProductList.add(new Product(Integer.parseInt(line), name, price));
+//            counter++;
+//        } while(line!=null);
+//        //close reader
+//        universalReader.close();
+//        //FILE READING SESSION END
+
+        tempProductList = categoryList.get(categoryIndex).getProductList();
+
+        //FILE WRITING SESSION START
+        universalWriter = new BufferedWriter(new FileWriter("src/text_database/"+newName+".txt"));
+        double counter2 = 0;
+        message = "";
+        for (Product i: tempProductList) {
+            message += (int)(counter2+1) + "\n" +i.getProductName() +"\n"+ i.getProductPrice() +"\n";
+        }
+        universalWriter.write(message);
+        universalWriter.close();
+        //FILE WRITING SESSION END
+        //clear list once again
+        tempProductList = new ArrayList<>();
+
+        File deleteFile = new File("src/text_database/"+formerName+".txt");
+        deleteFile.delete();
+
+        System.out.println("Successfully modified  "+formerName+" to "+newName+".");
     }
 }

@@ -8,3 +8,5 @@ Fries
 Pizza
 5
 Milk_Tea
+6
+Appetizers
