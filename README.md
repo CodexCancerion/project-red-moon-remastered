@@ -7,7 +7,7 @@ ___
 - Integrated with txt-based data storage
 - Initiated on **11/29/2022 - 12/09/2022**
 
-# Project Red Moon [Remastered]
+# Project Red Moon Remastered
 ___
 
 - Remaking the program to integrate **Object Oriented Programming**
