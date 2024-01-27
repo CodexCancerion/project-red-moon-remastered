@@ -1,0 +1,42 @@
+1
+Plain Burger
+29.5
+2
+Cheese Burger
+39.5
+3
+Red Moon Burger
+49.5
+4
+Beef Burger
+60.0
+5
+Water
+15.0
+6
+Red Moon Drink
+49.5
+7
+Taro
+60.0
+8
+Okinawa
+100.5
+9
+Plain Burger
+29.5
+10
+Red Moon Burger
+49.5
+11
+Beef Burger
+60.0
+12
+Water
+15.0
+13
+Taro
+60.0
+14
+Okinawa
+100.5

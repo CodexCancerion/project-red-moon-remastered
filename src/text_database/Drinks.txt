@@ -1,9 +1,6 @@
 1
 Water
-15
+15.0
 2
-Iced Tea
-39.50
-3
 Red Moon Drink
-49.50
+49.5

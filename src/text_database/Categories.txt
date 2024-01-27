@@ -3,10 +3,8 @@ Burgers
 2
 Drinks
 3
-Fries
-4
 Pizza
-5
+4
 Milk_Tea
-6
-Appetizers
+5
+All

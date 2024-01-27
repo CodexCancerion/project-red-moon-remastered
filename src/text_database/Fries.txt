@@ -1,9 +1,0 @@
-1
-Plain
-20.0
-2
-Cheese
-30.0
-3
-Sour Cream
-30.0

@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ProductCategory {
@@ -40,6 +37,22 @@ public class ProductCategory {
             str += String.format("\n%5s%20s%15.2f", "["+i.getProductIndex()+"]", i.getProductName(), i.getProductPrice());
         }
         return str;
+    }
+
+    public void updateCategoryDatabase(ArrayList<Product> tempProductList) throws IOException {
+        //FILE WRITING SESSION START
+        BufferedWriter universalWriter = new BufferedWriter(new FileWriter("src/text_database/"+categoryName+".txt"));
+        System.out.println("Adding new Product to text database...");
+        double counter2 = 0;
+        String message = "";
+        for (Product i: tempProductList) {
+            message += (int)(counter2+1) + "\n" +i.getProductName() +"\n"+ i.getProductPrice() +"\n";
+            double progress = (++counter2/tempProductList.size())*100;
+            System.out.printf("%d%% in progress\n", (int) progress);
+        }
+        universalWriter.write(message);
+        universalWriter.close();
+        //FILE WRITING SESSION END
     }
 
     public void setCategoryIndex(int categoryIndex) {
